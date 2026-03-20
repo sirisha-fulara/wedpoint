@@ -281,7 +281,7 @@ const AdminDashboard = () => {
                 <div key={template.id} className="admin-template-row">
                   <div className="admin-template-meta">
                     <strong>{template.name}</strong>
-                    <span>{template.type} · {template.religion} · {template.price}</span>
+                    <span>{template.type} ï¿½ {template.religion} ï¿½ {template.price}</span>
                   </div>
                   <button
                     type="button"
