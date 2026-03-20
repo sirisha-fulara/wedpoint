@@ -1,0 +1,32 @@
+.templates-page {
+  padding-top: 120px;
+  padding-bottom: 80px;
+  background-color: var(--color-background);
+  min-height: 100vh;
+}
+
+.templates-header-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .templates-header-section {
+    flex-direction: row;
+  }
+}
+
+.templates-page-title {
+  font-size: 2.5rem;
+  font-family: var(--font-heading);
+  color: var(--color-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.templates-page-subtitle {
+  color: var(--color-text-muted);
+}
