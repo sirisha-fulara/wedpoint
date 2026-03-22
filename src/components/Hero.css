@@ -388,19 +388,8 @@
 @media (max-width: 680px) {
   .hero {
     padding-top: 6.7rem;
-    padding-bottom: 1rem;
+    padding-bottom: 2.5rem;
     min-height: auto;
-  }
-
-  .hero::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 120px;
-    background: linear-gradient(180deg, rgba(244, 248, 239, 0), rgba(244, 248, 239, 1));
-    pointer-events: none;
   }
 
   .hero-badge {
@@ -413,10 +402,6 @@
 
   .hero-preview {
     display: none;
-  }
-
-  .hero-features {
-    margin-bottom: 0;
   }
 
   .preview-board {
