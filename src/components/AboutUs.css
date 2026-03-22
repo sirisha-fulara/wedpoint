@@ -92,6 +92,23 @@
 }
 
 @media (max-width: 576px) {
+  .about-image-wrapper {
+    max-width: 320px;
+  }
+
+  .about-image {
+    width: 88%;
+    margin: 0 auto;
+  }
+
+  .about-decoration {
+    top: -12px;
+    right: 0;
+    bottom: -12px;
+    left: 0;
+    transform: translate(12px, 12px);
+  }
+
   .about-stats {
     flex-wrap: wrap;
     gap: 1.5rem;
