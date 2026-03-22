@@ -22,20 +22,19 @@ const Navbar = () => {
       <div className="container nav-container">
         <Link to="/" className="logo">
           <span className="logo-mark">
-            <Heart className="logo-icon" size={16} fill="currentColor" />
+            <Heart size={14} fill="currentColor" />
           </span>
           <span className="logo-copy">
-            <strong>WedPoint</strong>
-            <small>Wedding Studio</small>
+            <strong>WedMeet</strong>
+            <small>Wedding Invitations</small>
           </span>
         </Link>
 
         <nav className="desktop-nav">
           <Link to="/" className="nav-link">Home</Link>
-          <Link to="/templates" className="nav-link">Templates</Link>
-          <Link to="/about" className="nav-link">About</Link>
-          <Link to="/templates" className="btn btn-primary nav-cta">Explore Designs</Link>
+          <Link to="/templates" className="nav-link">Explore Designs</Link>
         </nav>
+
 
         <button
           className="mobile-menu-btn"
@@ -56,9 +55,7 @@ const Navbar = () => {
             transition={{ duration: 0.22 }}
           >
             <Link to="/" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-            <Link to="/templates" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>Templates</Link>
-            <Link to="/about" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
-            <Link to="/templates" className="btn btn-primary mobile-btn" onClick={() => setIsMobileMenuOpen(false)}>Explore Designs</Link>
+            <Link to="/templates" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>Explore Designs</Link>
           </motion.nav>
         )}
       </AnimatePresence>
@@ -67,4 +64,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

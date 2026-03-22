@@ -22,20 +22,20 @@
 .reason-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-md);
-  border-color: rgba(191, 138, 148, 0.18);
+  border-color: rgba(143, 168, 129, 0.18);
 }
 
 .reason-icon {
   width: 74px;
   height: 74px;
   margin: 0 0 1.25rem;
-  background: linear-gradient(135deg, rgba(252, 240, 242, 0.98), rgba(223, 233, 220, 0.98));
+  background: linear-gradient(135deg, rgba(247, 250, 243, 0.98), rgba(223, 234, 215, 0.98));
   color: var(--color-primary-dark);
   border-radius: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 16px 30px rgba(116, 95, 100, 0.09);
+  box-shadow: 0 16px 30px rgba(92, 108, 89, 0.09);
   transition: transform 0.3s ease;
 }
 

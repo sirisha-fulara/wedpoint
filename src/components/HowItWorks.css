@@ -8,7 +8,8 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   position: relative;
-  padding-top: 1.5rem;
+  padding-top: 2.2rem;
+  overflow: visible;
 }
 
 .steps-container::before {
@@ -18,7 +19,7 @@
   left: 15%;
   width: 70%;
   height: 1px;
-  background: linear-gradient(90deg, rgba(191, 138, 148, 0.18), rgba(142, 168, 144, 0.24), rgba(191, 138, 148, 0.18));
+  background: linear-gradient(90deg, rgba(143, 168, 129, 0.18), rgba(185, 204, 176, 0.28), rgba(143, 168, 129, 0.18));
   z-index: 0;
 }
 
@@ -27,6 +28,7 @@
   padding: 3rem 2rem 2.2rem;
   text-align: center;
   z-index: 1;
+  overflow: visible;
 }
 
 .step-number {
@@ -36,8 +38,8 @@
   transform: translateX(-50%);
   width: 58px;
   height: 58px;
-  background: linear-gradient(135deg, rgba(252, 241, 243, 0.96), rgba(223, 233, 220, 0.96));
-  border: 5px solid rgba(255, 250, 247, 0.92);
+  background: linear-gradient(135deg, rgba(247, 250, 243, 0.96), rgba(223, 234, 215, 0.96));
+  border: 5px solid rgba(250, 252, 247, 0.92);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -46,14 +48,14 @@
   font-size: 1.35rem;
   font-weight: 700;
   color: var(--color-primary-dark);
-  box-shadow: 0 14px 30px rgba(116, 95, 100, 0.1);
+  box-shadow: 0 14px 30px rgba(92, 108, 89, 0.1);
 }
 
 .step-icon {
   width: 82px;
   height: 82px;
   margin: 0 auto 1.3rem;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 236, 230, 0.86));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(236, 244, 231, 0.88));
   color: var(--color-primary-dark);
   border-radius: 24px;
   display: flex;

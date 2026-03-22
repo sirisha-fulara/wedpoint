@@ -40,7 +40,7 @@
 }
 
 .faq-item.active {
-  border-color: rgba(191, 138, 148, 0.18);
+  border-color: rgba(143, 168, 129, 0.18);
   box-shadow: var(--shadow-md);
 }
 

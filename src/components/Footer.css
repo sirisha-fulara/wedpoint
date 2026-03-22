@@ -1,9 +1,9 @@
 .footer {
   margin-top: auto;
   padding: 0;
-  color: #f8eef1;
+  color: #eef5e8;
   background:
-    linear-gradient(180deg, rgba(77, 55, 67, 0.94), rgba(58, 40, 51, 0.98));
+    linear-gradient(180deg, rgba(81, 102, 74, 0.95), rgba(63, 82, 57, 0.98));
 }
 
 .footer-shell {
@@ -29,15 +29,16 @@
 
 .footer-logo {
   margin-bottom: 1rem;
+  color: rgba(207, 221, 199, 0.95);
 }
 
 .footer-mark {
-  background: linear-gradient(135deg, rgba(232, 182, 193, 0.95), rgba(191, 138, 148, 0.95));
+  background: linear-gradient(135deg, rgba(216, 231, 206, 0.95), rgba(143, 168, 129, 0.95));
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
 .footer-desc {
-  color: rgba(248, 238, 241, 0.72);
+  color: rgba(238, 245, 232, 0.74);
   line-height: 1.8;
   margin-bottom: 1.5rem;
   max-width: 340px;
@@ -60,6 +61,8 @@
   transition: transform 0.24s ease, background-color 0.24s ease, color 0.24s ease;
 }
 
+
+
 .social-link:hover {
   transform: translateY(-2px);
   background: rgba(255, 255, 255, 0.18);
@@ -81,7 +84,7 @@
 .footer-links a,
 .contact-info a,
 .contact-info li {
-  color: rgba(248, 238, 241, 0.72);
+  color: rgba(238, 245, 232, 0.72);
   transition: color 0.24s ease;
 }
 
@@ -97,12 +100,12 @@
 }
 
 .contact-icon {
-  color: rgba(255, 206, 216, 0.92);
+  color: rgba(220, 236, 208, 0.92);
 }
 
 .footer-contact-note {
   margin-top: 1.2rem;
-  color: rgba(248, 238, 241, 0.58);
+  color: rgba(238, 245, 232, 0.58);
   font-size: 0.92rem;
 }
 
@@ -113,7 +116,7 @@
   flex-wrap: wrap;
   padding: 1.2rem 0 1.8rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(248, 238, 241, 0.58);
+  color: rgba(238, 245, 232, 0.58);
   font-size: 0.9rem;
 }
 

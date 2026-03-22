@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import Templates from './pages/Templates';
 import TemplateDetails from './pages/TemplateDetails';
 import About from './pages/About';
+import TermsAndConditions from './pages/TermsAndConditions';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -34,6 +36,8 @@ const AppShell = () => {
           <Route path="/templates" element={<Templates />} />
           <Route path="/template/:id" element={<TemplateDetails />} />
           <Route path="/about" element={<About />} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />

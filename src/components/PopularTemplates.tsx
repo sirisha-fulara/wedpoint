@@ -18,7 +18,7 @@ const PopularTemplates = ({ activeCategory, isSlider = false }: PopularTemplates
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
       const { current } = scrollContainerRef;
-      const scrollAmount = current.clientWidth * 0.8; // Scroll by 80% of container width
+      const scrollAmount = current.clientWidth * 0.8;
       
       if (direction === 'left') {
         current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -38,7 +38,7 @@ const PopularTemplates = ({ activeCategory, isSlider = false }: PopularTemplates
         {isSlider && (
           <div className="templates-header">
             <div>
-              <h2 className="section-title">Popular Templates</h2>
+              <h2 className="section-title">Wedding Invitation</h2>
               <p className="section-subtitle mb-0">Discover our most loved wedding invitation designs by culture.</p>
             </div>
             <button className="btn btn-secondary" onClick={() => navigate('/templates')}>

@@ -7,7 +7,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 15% 25%, rgba(246, 221, 224, 0.45), transparent 22%);
+  background: radial-gradient(circle at 15% 25%, rgba(221, 235, 213, 0.45), transparent 22%);
   pointer-events: none;
 }
 

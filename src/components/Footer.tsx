@@ -1,4 +1,4 @@
-import { Heart, Instagram, Facebook, Mail, Phone } from 'lucide-react';
+import { Heart, Instagram, MessageCircle, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './Footer.css';
 
@@ -13,7 +13,7 @@ const Footer = () => {
                 <Heart className="logo-icon" size={16} fill="currentColor" />
               </span>
               <span className="logo-copy">
-                <strong>WedPoint</strong>
+                <strong>WedMeet</strong>
                 <small>Wedding Studio</small>
               </span>
             </Link>
@@ -21,11 +21,11 @@ const Footer = () => {
               A pastel invitation studio for couples who want refined design, smooth customization, and WhatsApp-ready delivery.
             </p>
             <div className="social-links">
-              <a href="#" className="social-link" aria-label="Instagram">
+              <a href="https://instagram.com/wedmeet.in" className="social-link" aria-label="Instagram">
                 <Instagram size={18} />
               </a>
-              <a href="#" className="social-link" aria-label="Facebook">
-                <Facebook size={18} />
+              <a href="https://wa.me/918830659769" className="social-link" aria-label="Whatsapp">
+                <MessageCircle size={18} />
               </a>
             </div>
           </div>
@@ -43,9 +43,8 @@ const Footer = () => {
           <div className="footer-links-group">
             <h4 className="footer-heading">Policies</h4>
             <ul className="footer-links">
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Terms & Conditions</a></li>
-              <li><a href="#">Cancellation Policy</a></li>
+              <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+              <li><Link to="/terms-and-conditions">Terms & Conditions</Link></li>
             </ul>
           </div>
 
@@ -53,12 +52,12 @@ const Footer = () => {
             <h4 className="footer-heading">Talk To Us</h4>
             <ul className="contact-info">
               <li>
-                <Mail size={18} className="contact-icon" />
-                <a href="mailto:support@wedpoint.in">support@wedpoint.in</a>
+                <Phone size={18} className="contact-icon" />
+                <a href="tel:+919876543210">+91 8830659769</a>
               </li>
               <li>
-                <Phone size={18} className="contact-icon" />
-                <a href="tel:+919876543210">+91 98765 43210</a>
+                <Instagram size={18} className="contact-icon" />
+                <a href="https://instagram.com/wedmeet.in" target="_blank" rel="noreferrer">@wedmeet.in</a>
               </li>
             </ul>
             <p className="footer-contact-note">Mon to Sat, 10 AM to 8 PM</p>
@@ -66,7 +65,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} WedPoint. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} WedMeet. All rights reserved.</p>
           <p>Designed for graceful, shareable celebrations.</p>
         </div>
       </div>

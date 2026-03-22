@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
-import { Palette, Sliders, Download, Tag, } from 'lucide-react';
+import { Sliders, Share2, Clock, Brush, Diamond, Smile } from 'lucide-react';
 import './WhyChooseUs.css';
 
 const reasons = [
-  { icon: <Palette size={32} />, title: 'Premium Templates', desc: 'Exclusive designs crafted by expert wedding designers.' },
-  { icon: <Sliders size={32} />, title: 'Easy Customization', desc: 'Personalize fonts, colors, and layout in seconds.' },
-  { icon: <Download size={32} />, title: 'Instant Download', desc: 'Get your high-resolution files immediately after checkout.' },
-  { icon: <Tag size={32} />, title: 'Affordable Pricing', desc: 'Luxury designs at a fraction of traditional printing costs.' },
+  { icon: <Diamond size={32} />, title: 'Premium Designs', desc: 'Carefully crafted wedding invitations with a modern and elegant touch.' },
+  { icon: <Sliders size={32} />, title: 'Professional Quality', desc: 'Designed by experienced creatives with attention to every detail.' },
+  { icon: <Clock size={32} />, title: 'Fast Delivery', desc: 'Get your customized invitation delivered within 3-4 days.' },
+  { icon: <Brush size={32} />, title: 'Fully Personalized', desc: 'Your names, dates, photos, and style - everything tailored to you.' },
+  { icon: <Share2 size={32}/> , title: 'Ready to Share', desc: 'Optimized for WhatsApp, Instagram, and all social platforms.' },
+  { icon: <Smile size={32} />, title: 'Hassle-Free Process', desc: 'Just share your details, and we handle the rest.' },
 ];
 
 const WhyChooseUs = () => {

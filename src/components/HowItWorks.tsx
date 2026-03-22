@@ -1,25 +1,31 @@
 import { motion } from 'framer-motion';
-import { LayoutTemplate, Paintbrush, Share2 } from 'lucide-react';
+import { LayoutTemplate, Share2, Palette, PersonStanding } from 'lucide-react';
 import './HowItWorks.css';
 
 const steps = [
   {
     icon: <LayoutTemplate size={32} />,
-    title: 'Choose Template',
-    description: 'Browse our beautiful collection of wedding invitation templates matching your aesthetic.',
+    title: 'Choose your Design',
+    description: 'Browse our collection and select a wedding invitation that matches your style.',
     number: '01'
   },
   {
-    icon: <Paintbrush size={32} />,
-    title: 'Customize Design',
-    description: 'Add names, dates, venues, couple photos, and completely personalize the layout.',
+    icon: <PersonStanding size={32} />,
+    title: 'Share Your Details',
+    description: 'Send us your names, date, venue, photos, and any custom preferences.',
     number: '02'
   },
   {
-    icon: <Share2 size={32} />,
-    title: 'Download or Share',
-    description: 'Instantly download your HD file or share directly via WhatsApp, email, or social media.',
+    icon: <Palette size={32} />,
+    title: 'We Design for You',
+    description: 'Our team creates your personalized invitation with a premium touch.',
     number: '03'
+  },
+  {
+    icon: <Share2 size={32} />,
+    title: 'Delivered in 3-4 Days',
+    description: 'Receive your ready-to-share digital invitation within 3-4 days.',
+    number: '04'
   }
 ];
 
