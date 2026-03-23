@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+﻿import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -20,6 +20,8 @@ type PopupMedia = 'video' | 'pdf' | null;
 type PackageType = 'pdf' | 'video';
 
 const adminWhatsappNumber = (import.meta.env.VITE_ADMIN_WHATSAPP_NUMBER || '').replace(/\D/g, '');
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') || '';
+
 
 const parsePriceValue = (value: string) => {
   const numeric = Number(value.replace(/[^\d.]/g, ''));
@@ -73,6 +75,8 @@ const TemplateDetailsContent = ({ template }: { template: Template }) => {
   const currentActiveTab = availableTabs.includes(activeTab) ? activeTab : 'gallery';
   const hasImages = template.images && template.images.length > 0;
   const isSingleImage = template.images.length === 1;
+  const pdfPreviewUrl = template.pdfUrl ? `${API_BASE_URL}${template.pdfUrl}` : null;
+
   const selectedPrice = selectedPackage === 'video' ? template.videoPrice || template.price : template.price;
   const unitPrice = parsePriceValue(selectedPrice);
   const totalAmount = unitPrice * quantity;
@@ -397,11 +401,22 @@ const TemplateDetailsContent = ({ template }: { template: Template }) => {
               )}
 
               {popupMedia === 'pdf' && template.pdfUrl && (
-                <iframe
-                  src={template.pdfUrl}
-                  className="template-pdf-frame modal-pdf-frame"
-                  title={`${template.name} sample PDF popup`}
-                />
+                <div className="modal-pdf-shell">
+                  <object
+                    data={pdfPreviewUrl || undefined}
+                    type="application/pdf"
+                    className="template-pdf-frame modal-pdf-frame"
+                    aria-label={`${template.name} sample PDF popup`}
+                  >
+                    <div className="pdf-fallback-card">
+                      <FileText size={28} />
+                      <p>This browser could not render the PDF preview inline.</p>
+                      <a href={pdfPreviewUrl || undefined} target="_blank" rel="noreferrer" className="btn btn-primary">
+                        Open PDF In New Tab
+                      </a>
+                    </div>
+                  </object>
+                </div>
               )}
             </div>
           </div>
@@ -575,3 +590,10 @@ const TemplateDetails = () => {
 };
 
 export default TemplateDetails;
+
+
+
+
+
+
+

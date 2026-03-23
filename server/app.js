@@ -1,4 +1,4 @@
-import 'dotenv/config';
+﻿import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
 import multer from 'multer';
@@ -48,6 +48,79 @@ export const ensureEnv = () => {
 };
 
 const isAuthorized = (req) => req.headers['x-admin-password'] === adminPassword;
+
+const normalizeToArray = (value) => {
+  if (Array.isArray(value)) {
+    return value.filter(Boolean);
+  }
+
+  if (typeof value === 'string' && value.trim()) {
+    return [value.trim()];
+  }
+
+  return [];
+};
+
+const buildSignedDeliveryUrl = (publicId, resourceType, fallbackUrl = null) => {
+  if (!publicId) {
+    return fallbackUrl;
+  }
+
+  return cloudinary.url(publicId, {
+    resource_type: resourceType,
+    type: 'upload',
+    secure: true,
+    sign_url: true,
+  });
+};
+
+const buildPrivateRawDownloadUrl = (publicId, fallbackUrl = null) => {
+  if (!publicId) {
+    return fallbackUrl;
+  }
+
+  return cloudinary.utils.private_download_url(publicId, '', {
+    resource_type: 'raw',
+    type: 'upload',
+    expires_at: Math.floor(Date.now() / 1000) + 60 * 10,
+  });
+};
+
+const serializeTemplate = (row) => ({
+  ...row,
+  videoUrl: buildSignedDeliveryUrl(row.videoPublicId, 'video', row.videoUrl),
+  pdfUrl: row.pdfPublicId || row.pdfUrl ? `/api/templates/${row.id}/pdf-preview` : null,
+});
+
+const streamCloudinaryAsset = async (res, publicId, resourceType, fallbackUrl, downloadFileName) => {
+  const sourceUrl = resourceType === 'raw' ? buildPrivateRawDownloadUrl(publicId, fallbackUrl) : buildSignedDeliveryUrl(publicId, resourceType, fallbackUrl);
+
+  if (!sourceUrl) {
+    res.status(404).json({ message: 'File not found' });
+    return;
+  }
+
+  const upstream = await fetch(sourceUrl);
+
+  if (!upstream.ok) {
+    res.status(upstream.status).json({ message: 'Failed to load file preview' });
+    return;
+  }
+
+  const contentType = upstream.headers.get('content-type') || (resourceType === 'raw' ? 'application/pdf' : 'application/octet-stream');
+  const contentLength = upstream.headers.get('content-length');
+
+  res.setHeader('Content-Type', contentType);
+  res.setHeader('Content-Disposition', `inline; filename="${downloadFileName || 'preview'}"`);
+  res.setHeader('Cache-Control', 'private, max-age=300');
+
+  if (contentLength) {
+    res.setHeader('Content-Length', contentLength);
+  }
+
+  const arrayBuffer = await upstream.arrayBuffer();
+  res.send(Buffer.from(arrayBuffer));
+};
 
 export const initializeDatabase = async () => {
   await pool.query(`
@@ -149,6 +222,33 @@ app.post('/api/admin/login', (req, res) => {
   res.json({ ok: true });
 });
 
+app.post('/api/admin/cloudinary-signature', (req, res) => {
+  if (!isAuthorized(req)) {
+    res.status(401).json({ message: 'Unauthorized' });
+    return;
+  }
+
+  const folder = typeof req.body?.folder === 'string' && req.body.folder.trim()
+    ? req.body.folder.trim()
+    : 'wedding-card/uploads';
+  const timestamp = Math.floor(Date.now() / 1000);
+  const signature = cloudinary.utils.api_sign_request(
+    {
+      folder,
+      timestamp,
+    },
+    process.env.CLOUDINARY_API_SECRET
+  );
+
+  res.json({
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+    apiKey: process.env.CLOUDINARY_API_KEY,
+    folder,
+    timestamp,
+    signature,
+  });
+});
+
 app.get('/api/templates', async (_req, res) => {
   try {
     const result = await pool.query(`
@@ -174,10 +274,46 @@ app.get('/api/templates', async (_req, res) => {
       ORDER BY created_at DESC, id DESC
     `);
 
-    res.json(result.rows);
+    res.json(result.rows.map(serializeTemplate));
   } catch (error) {
     console.error('Failed to fetch templates', error);
     res.status(500).json({ message: 'Failed to fetch templates' });
+  }
+});
+
+app.get('/api/templates/:id/pdf-preview', async (req, res) => {
+  try {
+    const result = await pool.query(
+      `
+        SELECT
+          id,
+          name,
+          pdf_url AS "pdfUrl",
+          pdf_public_id AS "pdfPublicId",
+          pdf_file_name AS "pdfFileName"
+        FROM templates
+        WHERE id = $1
+      `,
+      [req.params.id]
+    );
+
+    const template = result.rows[0];
+
+    if (!template || (!template.pdfPublicId && !template.pdfUrl)) {
+      res.status(404).json({ message: 'PDF not found' });
+      return;
+    }
+
+    await streamCloudinaryAsset(
+      res,
+      template.pdfPublicId,
+      'raw',
+      template.pdfUrl,
+      template.pdfFileName || `${template.name || 'template'}-preview.pdf`
+    );
+  } catch (error) {
+    console.error('Failed to preview PDF', error);
+    res.status(500).json({ message: 'Failed to preview PDF' });
   }
 });
 
@@ -206,22 +342,47 @@ app.post(
       const imageFiles = Array.isArray(files?.images) ? files.images : [];
       const videoFile = Array.isArray(files?.video) ? files.video[0] : undefined;
       const pdfFile = Array.isArray(files?.pdf) ? files.pdf[0] : undefined;
+      const imageUrlsFromBody = normalizeToArray(req.body.images);
+      const imagePublicIdsFromBody = normalizeToArray(req.body.imagePublicIds);
+      const imageFileNamesFromBody = normalizeToArray(req.body.imageFileNames);
+      const videoUrlFromBody = typeof req.body.videoUrl === 'string' ? req.body.videoUrl.trim() : '';
+      const videoPublicIdFromBody = typeof req.body.videoPublicId === 'string' ? req.body.videoPublicId.trim() : '';
+      const videoFileNameFromBody = typeof req.body.videoFileName === 'string' ? req.body.videoFileName.trim() : '';
+      const pdfUrlFromBody = typeof req.body.pdfUrl === 'string' ? req.body.pdfUrl.trim() : '';
+      const pdfPublicIdFromBody = typeof req.body.pdfPublicId === 'string' ? req.body.pdfPublicId.trim() : '';
+      const pdfFileNameFromBody = typeof req.body.pdfFileName === 'string' ? req.body.pdfFileName.trim() : '';
 
-      if (imageFiles.length === 0) {
+      if (imageFiles.length === 0 && imageUrlsFromBody.length === 0) {
         res.status(400).json({ message: 'At least one image is required' });
         return;
       }
 
-      const uploadedImages = await Promise.all(
-        imageFiles.map((file) => uploadToCloudinary(file, 'image', 'wedding-card/images'))
-      );
+      const uploadedImages = imageFiles.length > 0
+        ? await Promise.all(
+            imageFiles.map((file) => uploadToCloudinary(file, 'image', 'wedding-card/images'))
+          )
+        : imageUrlsFromBody.map((url, index) => ({
+            secure_url: url,
+            public_id: imagePublicIdsFromBody[index] || null,
+          }));
 
       const uploadedVideo = videoFile
         ? await uploadToCloudinary(videoFile, 'video', 'wedding-card/videos')
-        : null;
+        : videoUrlFromBody
+          ? {
+              secure_url: videoUrlFromBody,
+              public_id: videoPublicIdFromBody || null,
+            }
+          : null;
+
       const uploadedPdf = pdfFile
         ? await uploadToCloudinary(pdfFile, 'raw', 'wedding-card/pdfs')
-        : null;
+        : pdfUrlFromBody
+          ? {
+              secure_url: pdfUrlFromBody,
+              public_id: pdfPublicIdFromBody || null,
+            }
+          : null;
 
       const result = await pool.query(
         `
@@ -274,16 +435,16 @@ app.post(
           uploadedVideo?.public_id || null,
           uploadedPdf?.secure_url || null,
           uploadedPdf?.public_id || null,
-          imageFiles.map((file) => file.originalname),
-          videoFile?.originalname || null,
-          pdfFile?.originalname || null,
+          imageFiles.length > 0 ? imageFiles.map((file) => file.originalname) : imageFileNamesFromBody,
+          videoFile?.originalname || videoFileNameFromBody || null,
+          pdfFile?.originalname || pdfFileNameFromBody || null,
           type.trim(),
           badge?.trim() || null,
           religion.trim(),
         ]
       );
 
-      res.status(201).json(result.rows[0]);
+      res.status(201).json(serializeTemplate(result.rows[0]));
     } catch (error) {
       console.error('Failed to create template', error);
       res.status(500).json({ message: 'Failed to create template' });
@@ -333,3 +494,7 @@ app.delete('/api/templates/:id', async (req, res) => {
 });
 
 export default app;
+
+
+
+

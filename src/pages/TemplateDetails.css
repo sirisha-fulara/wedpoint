@@ -1,4 +1,4 @@
-.template-details-page {
+﻿.template-details-page {
   padding-top: 120px;
   padding-bottom: 80px;
   background:
@@ -590,6 +590,7 @@
 }
 
 .modal-pdf-frame {
+  width: 100%;
   min-height: 75vh;
   border-radius: 22px;
   background: white;
@@ -804,7 +805,35 @@
     height: min(72vh, 520px);
   }
 
+  .modal-pdf-shell {
+    min-height: 58vh;
+  }
+
   .modal-pdf-frame {
     min-height: 58vh;
   }
+
+  .pdf-fallback-card {
+    min-height: 58vh;
+  }
+}
+
+.modal-pdf-shell {
+  min-height: 75vh;
+}
+
+.pdf-fallback-card {
+  min-height: 75vh;
+  display: grid;
+  place-items: center;
+  gap: 0.9rem;
+  padding: 2rem;
+  text-align: center;
+  color: var(--color-text-muted);
+  background: linear-gradient(180deg, #ffffff 0%, #f6f4ef 100%);
+}
+
+.pdf-fallback-card p {
+  margin: 0;
+  max-width: 28rem;
 }

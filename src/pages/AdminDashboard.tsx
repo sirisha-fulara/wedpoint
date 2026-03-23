@@ -1,9 +1,21 @@
-import { useMemo, useState } from 'react';
+﻿import { useMemo, useState } from 'react';
 import { useTemplates } from '../context/TemplateContext';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { AlertCircle, CheckCircle, LogOut, PlusCircle, Trash2, Upload } from 'lucide-react';
+import { AlertCircle, CheckCircle, FileText, ImageIcon, LogOut, PlusCircle, Trash2, Upload, Video } from 'lucide-react';
 import './AdminDashboard.css';
+
+type UploadState = {
+  images: number;
+  video: number;
+  pdf: number;
+};
+
+const initialUploadState: UploadState = {
+  images: 0,
+  video: 0,
+  pdf: 0,
+};
 
 const AdminDashboard = () => {
   const { templates, addTemplate, removeTemplate, isLoading } = useTemplates();
@@ -23,6 +35,7 @@ const AdminDashboard = () => {
   const [errorMsg, setErrorMsg] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState<number | string | null>(null);
+  const [uploadState, setUploadState] = useState<UploadState>(initialUploadState);
 
   const dashboardTemplates = useMemo(
     () => templates.filter((template) => template.id !== 'demo-slider-template'),
@@ -34,12 +47,28 @@ const AdminDashboard = () => {
     navigate('/admin/login', { replace: true });
   };
 
-  const formatPrice = (value: string) => (value.startsWith('₹') ? value : `₹${value}`);
+  const formatPrice = (value: string) => (value.startsWith('?') ? value : `?${value}`);
+
+  const formatFileSize = (size: number) => {
+    if (size < 1024 * 1024) {
+      return `${Math.round(size / 1024)} KB`;
+    }
+
+    return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
+  const resetMediaState = () => {
+    setImages([]);
+    setVideo(null);
+    setPdf(null);
+    setUploadState(initialUploadState);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSuccessMsg('');
     setErrorMsg('');
+    setUploadState(initialUploadState);
 
     if (images.length === 0) {
       setErrorMsg('Select at least one image from your device.');
@@ -60,6 +89,9 @@ const AdminDashboard = () => {
         type,
         religion,
         adminPassword,
+        onUploadProgress: ({ kind, percent }) => {
+          setUploadState((prev) => ({ ...prev, [kind]: percent }));
+        },
       });
 
       setSuccessMsg('Template uploaded and saved successfully.');
@@ -67,9 +99,7 @@ const AdminDashboard = () => {
       setDescription('');
       setPrice('');
       setVideoPrice('');
-      setImages([]);
-      setVideo(null);
-      setPdf(null);
+      resetMediaState();
       e.currentTarget.reset();
       window.setTimeout(() => setSuccessMsg(''), 3000);
     } catch (error) {
@@ -146,7 +176,7 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label className="admin-label">Base Price (PDF) (₹)</label>
+                <label className="admin-label">Base Price (PDF) (?)</label>
                 <input
                   type="text"
                   required
@@ -158,7 +188,7 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label className="admin-label">Video Price (₹) (Optional)</label>
+                <label className="admin-label">Video Price (?) (Optional)</label>
                 <input
                   type="text"
                   value={videoPrice}
@@ -216,7 +246,7 @@ const AdminDashboard = () => {
                 <Upload size={18} /> Upload Media From Device
               </p>
 
-              <div>
+              <div className="admin-media-field">
                 <label className="admin-label">Images</label>
                 <input
                   type="file"
@@ -226,13 +256,42 @@ const AdminDashboard = () => {
                   onChange={(e) => setImages(Array.from(e.target.files || []))}
                   className="admin-input admin-file-input"
                 />
-                <p className="admin-help-text">
-                  {images.length > 0 ? `${images.length} image file(s) selected.` : 'Select one or more preview images.'}
-                </p>
+                <div className="admin-upload-card">
+                  <div className="admin-upload-card-head">
+                    <span className="admin-upload-card-title"><ImageIcon size={16} /> Image files</span>
+                    <span className={`admin-upload-pill ${images.length > 0 ? 'is-ready' : ''}`}>
+                      {images.length > 0 ? `${images.length} selected` : 'Not selected'}
+                    </span>
+                  </div>
+                  <p className="admin-help-text">
+                    {images.length > 0 ? 'These previews will be uploaded with the template.' : 'Select one or more preview images.'}
+                  </p>
+                  {images.length > 0 && (
+                    <div className="admin-file-list">
+                      {images.map((image) => (
+                        <div key={`${image.name}-${image.size}`} className="admin-file-row">
+                          <span>{image.name}</span>
+                          <span>{formatFileSize(image.size)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {isSubmitting && images.length > 0 && (
+                    <div className="admin-progress-block">
+                      <div className="admin-progress-label">
+                        <span>Image upload</span>
+                        <span>{uploadState.images}%</span>
+                      </div>
+                      <div className="admin-progress-track">
+                        <div className="admin-progress-fill" style={{ width: `${uploadState.images}%` }} />
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="admin-two-col">
-                <div>
+                <div className="admin-media-field">
                   <label className="admin-label">Video File (Optional)</label>
                   <input
                     type="file"
@@ -240,12 +299,31 @@ const AdminDashboard = () => {
                     onChange={(e) => setVideo(e.target.files?.[0] || null)}
                     className="admin-input admin-file-input"
                   />
-                  <p className="admin-help-text">
-                    {video ? video.name : 'Upload an MP4 or other supported video format.'}
-                  </p>
+                  <div className="admin-upload-card">
+                    <div className="admin-upload-card-head">
+                      <span className="admin-upload-card-title"><Video size={16} /> Video file</span>
+                      <span className={`admin-upload-pill ${video ? 'is-ready' : ''}`}>
+                        {video ? 'Selected' : 'Optional'}
+                      </span>
+                    </div>
+                    <p className="admin-help-text">
+                      {video ? `${video.name} • ${formatFileSize(video.size)}` : 'Upload an MP4 or other supported video format.'}
+                    </p>
+                    {video && isSubmitting && (
+                      <div className="admin-progress-block">
+                        <div className="admin-progress-label">
+                          <span>Video upload</span>
+                          <span>{uploadState.video}%</span>
+                        </div>
+                        <div className="admin-progress-track">
+                          <div className="admin-progress-fill" style={{ width: `${uploadState.video}%` }} />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                <div>
+                <div className="admin-media-field">
                   <label className="admin-label">Sample PDF (Optional)</label>
                   <input
                     type="file"
@@ -253,9 +331,28 @@ const AdminDashboard = () => {
                     onChange={(e) => setPdf(e.target.files?.[0] || null)}
                     className="admin-input admin-file-input"
                   />
-                  <p className="admin-help-text">
-                    {pdf ? pdf.name : 'Upload a sample PDF for download or preview.'}
-                  </p>
+                  <div className="admin-upload-card">
+                    <div className="admin-upload-card-head">
+                      <span className="admin-upload-card-title"><FileText size={16} /> PDF file</span>
+                      <span className={`admin-upload-pill ${pdf ? 'is-ready' : ''}`}>
+                        {pdf ? 'Selected' : 'Optional'}
+                      </span>
+                    </div>
+                    <p className="admin-help-text">
+                      {pdf ? `${pdf.name} • ${formatFileSize(pdf.size)}` : 'Upload a sample PDF for download or preview.'}
+                    </p>
+                    {pdf && isSubmitting && (
+                      <div className="admin-progress-block">
+                        <div className="admin-progress-label">
+                          <span>PDF upload</span>
+                          <span>{uploadState.pdf}%</span>
+                        </div>
+                        <div className="admin-progress-track">
+                          <div className="admin-progress-fill" style={{ width: `${uploadState.pdf}%` }} />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -281,7 +378,7 @@ const AdminDashboard = () => {
                 <div key={template.id} className="admin-template-row">
                   <div className="admin-template-meta">
                     <strong>{template.name}</strong>
-                    <span>{template.type} � {template.religion} � {template.price}</span>
+                    <span>{template.type} • {template.religion} • {template.price}</span>
                   </div>
                   <button
                     type="button"
@@ -302,3 +399,4 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+
