@@ -227,3 +227,4 @@ export const deleteTemplate = async (id: number | string, adminPassword: string)
   }
 };
 
+

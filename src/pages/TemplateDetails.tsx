@@ -22,6 +22,22 @@ type PackageType = 'pdf' | 'video';
 const adminWhatsappNumber = (import.meta.env.VITE_ADMIN_WHATSAPP_NUMBER || '').replace(/\D/g, '');
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') || '';
 
+const resolveMediaUrl = (path: string | null | undefined) => {
+  if (!path) {
+    return null;
+  }
+
+  if (/^https?:\/\//.test(path)) {
+    return path;
+  }
+
+  if (path.startsWith('/')) {
+    return API_BASE_URL && !/localhost(?::\d+)?$/i.test(API_BASE_URL) ? `${API_BASE_URL}${path}` : path;
+  }
+
+  return API_BASE_URL ? `${API_BASE_URL}/${path}` : `/${path}`;
+};
+
 
 const parsePriceValue = (value: string) => {
   const numeric = Number(value.replace(/[^\d.]/g, ''));
@@ -75,7 +91,7 @@ const TemplateDetailsContent = ({ template }: { template: Template }) => {
   const currentActiveTab = availableTabs.includes(activeTab) ? activeTab : 'gallery';
   const hasImages = template.images && template.images.length > 0;
   const isSingleImage = template.images.length === 1;
-  const pdfPreviewUrl = template.pdfUrl ? `${API_BASE_URL}${template.pdfUrl}` : null;
+  const pdfPreviewUrl = resolveMediaUrl(template.pdfUrl);
 
   const selectedPrice = selectedPackage === 'video' ? template.videoPrice || template.price : template.price;
   const unitPrice = parsePriceValue(selectedPrice);
@@ -590,6 +606,8 @@ const TemplateDetails = () => {
 };
 
 export default TemplateDetails;
+
+
 
 
 
