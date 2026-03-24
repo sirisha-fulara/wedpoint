@@ -27,6 +27,7 @@
   --radius-md: 22px;
   --radius-lg: 34px;
   --content-width: 1240px;
+  --page-gutter: 1rem;
 }
 
 * {
@@ -107,7 +108,7 @@ button {
 }
 
 .container {
-  width: min(var(--content-width), calc(100% - 2rem));
+  width: min(var(--content-width), calc(100% - (var(--page-gutter) * 2)));
   margin: 0 auto;
 }
 
@@ -192,8 +193,12 @@ button {
 }
 
 @media (max-width: 767px) {
+  :root {
+    --page-gutter: 1rem;
+  }
+
   .container {
-    width: min(var(--content-width), calc(100% - 1.1rem));
+    width: min(var(--content-width), calc(100% - (var(--page-gutter) * 2)));
   }
 
   .py-20 {

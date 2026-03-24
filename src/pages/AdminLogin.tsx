@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Lock } from 'lucide-react';
+import { AlertCircle, Lock } from 'lucide-react';
 import './AdminLogin.css';
 
 const AdminLogin = () => {
@@ -34,41 +34,48 @@ const AdminLogin = () => {
 
   return (
     <main className="admin-login-page">
-      <div className="container" style={{ width: '100%', maxWidth: '400px' }}>
-        <div className="card p-8 text-center" style={{ background: 'var(--color-surface)' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
-            <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--color-surface-alt)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Lock size={28} color="var(--color-primary)" />
-            </div>
+      <div className="container admin-login-container">
+        <div className="admin-login-shell">
+          <div className="admin-login-copy">
+            <p className="admin-login-kicker">WedMeet Admin</p>
+            <h1 className="admin-login-title">Access the dashboard</h1>
+            <p className="admin-login-subtitle">
+              Sign in to upload templates, manage video and PDF previews, and keep the invitation catalog current.
+            </p>
           </div>
 
-          <h1 className="text-3xl font-[var(--font-heading)] text-[var(--color-secondary)] mb-2">Admin Panel</h1>
-          <p className="text-[var(--color-text-muted)] mb-6">Enter password to access the dashboard.</p>
+          <div className="card admin-login-card">
+            <div className="admin-login-icon">
+              <Lock size={28} color="var(--color-primary)" />
+            </div>
 
-          <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: '1.5rem', textAlign: 'left' }}>
+            <h2 className="admin-login-card-title">Admin Panel</h2>
+            <p className="admin-login-card-copy">Enter your password to continue.</p>
+
+            <form onSubmit={handleSubmit} className="admin-login-form">
+              <label className="admin-login-field">
+                <span>Password</span>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
                 autoComplete="current-password"
-                style={{
-                  width: '100%',
-                  padding: '1rem',
-                  borderRadius: 'var(--radius-md)',
-                  border: '1px solid var(--color-border)',
-                  outline: 'none',
-                  fontSize: '1rem'
-                }}
+                className="admin-login-input"
               />
-              {error && <p style={{ color: 'var(--color-error)', marginTop: '0.5rem', fontSize: '0.875rem' }}>{error}</p>}
-            </div>
+              </label>
 
-            <button type="submit" className="btn btn-primary w-full py-3" style={{ width: '100%' }} disabled={isSubmitting}>
-              {isSubmitting ? 'Signing in...' : 'Login'}
-            </button>
-          </form>
+              {error && (
+                <p className="admin-login-error">
+                  <AlertCircle size={16} /> {error}
+                </p>
+              )}
+
+              <button type="submit" className="btn btn-primary admin-login-btn" disabled={isSubmitting}>
+                {isSubmitting ? 'Signing in...' : 'Login'}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </main>

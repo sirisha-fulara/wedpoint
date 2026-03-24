@@ -735,6 +735,18 @@
     padding-bottom: 56px;
   }
 
+  .template-details-grid {
+    gap: 1.5rem;
+  }
+
+  .template-visual-container,
+  .template-card-section,
+  .template-price-table,
+  .customise-btn,
+  .whatsapp-support-btn {
+    width: 100%;
+  }
+
   .media-stage {
     min-height: 420px;
     padding: 0.2rem 0.55rem 0.35rem;
@@ -763,6 +775,14 @@
   .customise-form {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+
+  .template-card-section {
+    border-radius: 28px;
+  }
+
+  .template-price-table {
+    padding: 1.1rem;
   }
 
   .pricing-row,

@@ -32,9 +32,17 @@
   color: rgba(207, 221, 199, 0.95);
 }
 
-.footer-mark {
-  background: linear-gradient(135deg, rgba(216, 231, 206, 0.95), rgba(143, 168, 129, 0.95));
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+.footer-logo .logo-wordmark-dark,
+.footer-logo .logo-wordmark-mark {
+  color: #f5f8f0;
+}
+
+.footer-logo .logo-wordmark-accent {
+  color: #d8e5cc;
+}
+
+.footer-logo .logo-copy small {
+  color: rgba(238, 245, 232, 0.62);
 }
 
 .footer-desc {

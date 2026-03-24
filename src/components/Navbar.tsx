@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Menu, X, Heart } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
@@ -21,11 +21,12 @@ const Navbar = () => {
     <header className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="container nav-container">
         <Link to="/" className="logo">
-          <span className="logo-mark">
-            <Heart size={14} fill="currentColor" />
-          </span>
-          <span className="logo-copy">
-            <strong>WedMeet</strong>
+          <span className="logo-copy logo-wordmark">
+            <strong>
+              <span className="logo-wordmark-dark">Wed</span>
+              <span className="logo-wordmark-accent">Meet</span>
+              <span className="logo-wordmark-mark">TM</span>
+            </strong>
             <small>Wedding Invitations</small>
           </span>
         </Link>

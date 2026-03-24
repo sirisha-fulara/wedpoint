@@ -1,4 +1,4 @@
-import { Heart, Instagram, MessageCircle, Phone } from 'lucide-react';
+import { Instagram, MessageCircle, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './Footer.css';
 
@@ -9,11 +9,12 @@ const Footer = () => {
         <div className="footer-grid">
           <div className="footer-brand">
             <Link to="/" className="logo footer-logo">
-              <span className="logo-mark footer-mark">
-                <Heart className="logo-icon" size={16} fill="currentColor" />
-              </span>
-              <span className="logo-copy">
-                <strong>WedMeet</strong>
+              <span className="logo-copy logo-wordmark">
+                <strong>
+                  <span className="logo-wordmark-dark">Wed</span>
+                  <span className="logo-wordmark-accent">Meet</span>
+                  <span className="logo-wordmark-mark">TM</span>
+                </strong>
                 <small>Wedding Studio</small>
               </span>
             </Link>
