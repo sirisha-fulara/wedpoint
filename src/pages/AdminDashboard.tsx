@@ -47,7 +47,9 @@ const AdminDashboard = () => {
     navigate('/admin/login', { replace: true });
   };
 
-  const formatPrice = (value: string) => (value.startsWith('?') ? value : `?${value}`);
+  const RUPEE = '\u20B9';
+  const normalizePrice = (value: string) => value.replace(/^[^\d]+/, '').trim();
+  const formatPrice = (value: string) => `${RUPEE}${normalizePrice(value)}`;
 
   const formatFileSize = (size: number) => {
     if (size < 1024 * 1024) {
@@ -176,7 +178,7 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label className="admin-label">Base Price (PDF) (?)</label>
+                <label className="admin-label">Base Price (PDF) (₹)</label>
                 <input
                   type="text"
                   required
@@ -188,7 +190,7 @@ const AdminDashboard = () => {
               </div>
 
               <div>
-                <label className="admin-label">Video Price (?) (Optional)</label>
+                <label className="admin-label">Video Price (₹) (Optional)</label>
                 <input
                   type="text"
                   value={videoPrice}

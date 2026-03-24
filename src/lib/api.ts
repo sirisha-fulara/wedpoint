@@ -19,6 +19,22 @@ interface UploadedAsset {
 }
 
 const buildUrl = (path: string) => `${API_BASE_URL}${path}`;
+const RUPEE = '\u20B9';
+
+const normalizePrice = (value?: string | null) => {
+  if (!value) {
+    return value ?? undefined;
+  }
+
+  const digits = value.replace(/[^\d.]/g, '');
+  return digits ? `${RUPEE}${digits}` : value;
+};
+
+const normalizeTemplate = (template: Template): Template => ({
+  ...template,
+  price: normalizePrice(template.price) || template.price,
+  videoPrice: normalizePrice(template.videoPrice),
+});
 
 export interface CreateTemplatePayload {
   name: string;
@@ -130,7 +146,8 @@ export const fetchTemplates = async (): Promise<Template[]> => {
     throw new Error(await extractErrorMessage(response, 'Failed to fetch templates'));
   }
 
-  return response.json();
+  const templates = (await response.json()) as Template[];
+  return templates.map(normalizeTemplate);
 };
 
 export const createTemplate = async (payload: CreateTemplatePayload): Promise<Template> => {
@@ -211,7 +228,8 @@ export const createTemplate = async (payload: CreateTemplatePayload): Promise<Te
     throw new Error(await extractErrorMessage(response, 'Failed to create template'));
   }
 
-  return response.json();
+  const template = (await response.json()) as Template;
+  return normalizeTemplate(template);
 };
 
 export const deleteTemplate = async (id: number | string, adminPassword: string): Promise<void> => {
@@ -226,5 +244,3 @@ export const deleteTemplate = async (id: number | string, adminPassword: string)
     throw new Error(await extractErrorMessage(response, 'Failed to delete template'));
   }
 };
-
-
