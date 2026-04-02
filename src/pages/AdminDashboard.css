@@ -1,8 +1,55 @@
-﻿.admin-dashboard-page {
+.admin-dashboard-page {
+  --color-primary: #8fa881;
+  --color-primary-dark: #64795b;
+  --color-secondary: #4d6248;
+  --color-text-muted: #6e7c6a;
+  --color-border: rgba(100, 121, 91, 0.16);
+  --color-background: #f4f8ef;
+  --color-surface-alt: #e8f0e0;
+  
   padding-top: 120px;
   padding-bottom: 80px;
   background-color: var(--color-background);
+  color: var(--color-text-muted);
   min-height: 100vh;
+}
+
+/* Missing classes */
+.admin-dashboard-page .card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+}
+.admin-dashboard-page .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  padding: 0.6rem 1.2rem;
+}
+.admin-dashboard-page .btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+.admin-dashboard-page .btn-primary:hover {
+  background: var(--color-primary-dark);
+}
+.admin-dashboard-page .btn-secondary {
+  background: transparent;
+  color: var(--color-secondary);
+  border: 1px solid var(--color-border);
+}
+.admin-dashboard-page .btn-secondary:hover {
+  background: var(--color-surface-alt);
+}
+.admin-dashboard-page .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .admin-dashboard-container {

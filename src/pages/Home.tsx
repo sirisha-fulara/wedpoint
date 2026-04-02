@@ -1,17 +1,17 @@
 import Hero from '../components/Hero';
+import Marquee from '../components/Marquee';
 import PopularTemplates from '../components/PopularTemplates';
-import HowItWorks from '../components/HowItWorks';
+import DigitalVideoBanner from '../components/DigitalVideoBanner';
 import WhyChooseUs from '../components/WhyChooseUs';
-import FAQ from '../components/FAQ';
 
 const Home = () => {
   return (
-    <main>
+    <main style={{ marginTop: '68px' }}>
       <Hero />
-      <PopularTemplates activeCategory="all" isSlider={true} />
-      <HowItWorks />
+      <Marquee />
+      <PopularTemplates initialFilter="all" limit={6} showViewAll={true} />
+      <DigitalVideoBanner />
       <WhyChooseUs />
-      <FAQ />
     </main>
   );
 };

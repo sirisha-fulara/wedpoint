@@ -1,123 +1,129 @@
-import { useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Edit3, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
 import { useTemplates } from '../context/TemplateContext';
+import type { Template } from '../context/TemplateContext';
+import { useUI } from '../context/UIContext';
+import { useNavigate } from 'react-router-dom';
 import './PopularTemplates.css';
 
-interface PopularTemplatesProps {
-  activeCategory: string;
-  isSlider?: boolean;
+interface Props {
+  initialFilter?: string;
+  limit?: number;
+  showViewAll?: boolean;
 }
 
-const PopularTemplates = ({ activeCategory, isSlider = false }: PopularTemplatesProps) => {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+const PopularTemplates = ({ initialFilter = 'all', limit, showViewAll }: Props) => {
+  const { templates, isLoading } = useTemplates();
+  const { addToCart } = useUI();
+  const [filter, setFilter] = useState(initialFilter);
+  const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const { templates, isLoading, error } = useTemplates();
 
-  const scroll = (direction: 'left' | 'right') => {
-    if (scrollContainerRef.current) {
-      const { current } = scrollContainerRef;
-      const scrollAmount = current.clientWidth * 0.8;
-      
-      if (direction === 'left') {
-        current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-      } else {
-        current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      }
+  useEffect(() => {
+    // Reveal animation
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    if (ref.current) {
+      const reveals = ref.current.querySelectorAll('.reveal');
+      reveals.forEach(r => obs.observe(r));
     }
-  };
+    return () => obs.disconnect();
+  }, [filter, templates, isLoading]);
 
-  const filteredTemplates = templates.filter(
-    template => activeCategory === 'all' || template.religion === activeCategory
-  );
+  // Adapt the filter logic. The HTML had categories: traditional, modern, floral, royal, minimal, video.
+  // We'll map template 'religion', 'badge', 'type' loosely since we may not have exact styles.
+  const filteredTemplates = templates.filter(t => {
+    if (filter === 'all') return true;
+    if (filter === 'video') return t.type === 'video';
+    // Mappings based on keywords
+    const desc = (t.name + ' ' + t.description).toLowerCase();
+    return desc.includes(filter);
+  });
+
+  const displayedTemplates = limit ? filteredTemplates.slice(0, limit) : filteredTemplates;
+
+  if (isLoading) {
+    return <section className="section text-center"><p style={{color: 'rgba(255,255,255,0.4)'}}>Loading templates...</p></section>;
+  }
 
   return (
-    <section className={`popular-templates ${isSlider ? 'py-20' : 'pb-20'}`}>
-      <div className="container">
-        {isSlider && (
-          <div className="templates-header">
-            <div>
-              <h2 className="section-title">Wedding Invitation</h2>
-              <p className="section-subtitle mb-0">Discover our most loved wedding invitation designs by culture.</p>
-            </div>
-            <button className="btn btn-secondary" onClick={() => navigate('/templates')}>
-              View All Designs
-            </button>
-          </div>
-        )}
-
-        {isSlider && (
-          <div className="slider-controls">
-            <button 
-              className="slider-btn prev-btn" 
-              onClick={() => scroll('left')}
-              aria-label="Previous templates"
-            >
-              <ChevronLeft size={24} />
-            </button>
-            <button 
-              className="slider-btn next-btn" 
-              onClick={() => scroll('right')}
-              aria-label="Next templates"
-            >
-              <ChevronRight size={24} />
-            </button>
-          </div>
-        )}
-
-        <div className={isSlider ? "templates-slider-container" : "templates-grid-container"}>
-          {error && !isSlider && (
-            <p style={{ color: 'var(--color-text-muted)', marginBottom: '1rem' }}>{error}</p>
-          )}
-          {isLoading && (
-            <p style={{ color: 'var(--color-text-muted)' }}>Loading templates...</p>
-          )}
-          <motion.div 
-            layout 
-            className={isSlider ? "templates-slider" : "templates-grid"}
-            ref={isSlider ? scrollContainerRef : null}
+    <section className="section" id="products" ref={ref}>
+      <div className="reveal">
+        <div className="sec-eye">Browse by Style</div>
+        <h2 className="sec-title">Our <em>Collections</em></h2>
+        <div className="cat-row">
+          <button className={`cat-pill ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>All</button>
+          <button className={`cat-pill ${filter === 'traditional' ? 'active' : ''}`} onClick={() => setFilter('traditional')}>Traditional</button>
+          <button className={`cat-pill ${filter === 'modern' ? 'active' : ''}`} onClick={() => setFilter('modern')}>Modern</button>
+          <button className={`cat-pill ${filter === 'floral' ? 'active' : ''}`} onClick={() => setFilter('floral')}>Floral</button>
+          <button className={`cat-pill ${filter === 'royal' ? 'active' : ''}`} onClick={() => setFilter('royal')}>Royal</button>
+          <button className={`cat-pill ${filter === 'minimal' ? 'active' : ''}`} onClick={() => setFilter('minimal')}>Minimal</button>
+          <button 
+            className={`cat-pill ${filter === 'video' ? 'active' : ''}`} 
+            style={filter !== 'video' ? { color: 'var(--green-l)', borderColor: 'rgba(106,171,112,0.3)' } : {}}
+            onClick={() => setFilter('video')}
           >
-          <AnimatePresence>
-            {filteredTemplates.map((template) => (
-              <motion.div 
-                key={template.id}
-                layout
-                className="template-card card"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                onClick={() => navigate(`/template/${template.id}`)}
-                style={{ cursor: 'pointer' }}
+            🎬 Digital Video
+          </button>
+        </div>
+      </div>
+
+      <div className="product-grid reveal">
+        {displayedTemplates.length === 0 ? (
+          <p style={{ gridColumn: '1/-1', textAlign: 'center', color: 'rgba(255,255,255,0.3)', padding: '50px' }}>
+            No designs found.
+          </p>
+        ) : (
+          displayedTemplates.map((p: Template, i) => {
+            const isVideo = p.type === 'video';
+            const thumbnail = p.images?.[0] || 'https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80';
+            const badgeClass = p.badge && p.badge.toLowerCase() === 'new' ? 'badge-new' : (isVideo ? 'badge-digital' : '');
+
+            return (
+              <div 
+                className="product-card reveal" 
+                key={p.id} 
+                style={{ transitionDelay: `${Math.min(i * 0.07, 0.5)}s` }}
+                onClick={() => navigate(`/template/${p.id}`)}
               >
-                <div className="template-image-container">
-                  {template.images && template.images.length > 0 ? (
-                    <img src={template.images[0]} alt={template.name} className="template-image" />
-                  ) : (
-                    <div className="template-image" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--color-surface-alt)', color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>
-                      No Image Provided
+                <div className="product-thumb">
+                  <img src={thumbnail} alt={p.name} loading="lazy" />
+                  <div className="product-thumb-overlay"></div>
+                  {isVideo && <div className="play-btn">▶</div>}
+                  {p.badge && <span className={`product-badge ${badgeClass}`}>{p.badge}</span>}
+                  {isVideo && <span className="digital-label">📲 Online Delivery</span>}
+                </div>
+                <div className="product-info">
+                  <h3>{p.name}</h3>
+                  <p className="meta">{p.description?.substring(0, 40) || (isVideo ? 'Digital Video · WhatsApp' : 'Set of 50 · Printed Card')}</p>
+                  <div className="product-footer">
+                    <div className="price">
+                      {p.price.replace(/[^\d₹.,]/g, '')}
+                      <sub>/{isVideo ? 'video' : 'set'}</sub>
                     </div>
-                  )}
-                  {template.badge && (
-                    <span className="template-badge">{template.badge}</span>
-                  )}
-                  <div className="template-overlay">
-                    <button className="btn btn-primary btn-customize" onClick={(e) => { e.stopPropagation(); navigate(`/template/${template.id}`); }}>
-                      <Edit3 size={18} style={{ marginRight: '8px' }} /> View Details
+                    <button className="add-btn" onClick={(e) => { e.stopPropagation(); addToCart(p); }}>
+                      Add to Cart
                     </button>
                   </div>
                 </div>
-                <div className="template-info">
-                  <span className="template-type">{template.type}</span>
-                  <h3 className="template-name">{template.name}</h3>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
-        </div>
+              </div>
+            );
+          })
+        )}
       </div>
+
+      {showViewAll && (
+        <div className="text-center" style={{ marginTop: '40px' }}>
+          <button className="btn-secondary" style={{ padding: '12px 28px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '40px', cursor: 'pointer', fontFamily: 'Outfit' }} onClick={() => navigate('/templates')}>
+            View All Designs →
+          </button>
+        </div>
+      )}
     </section>
   );
 };

@@ -1,4 +1,21 @@
+/* Restore light theme for admin pages */
+:root {
+  --admin-color-primary: #8fa881;
+  --admin-color-primary-dark: #64795b;
+  --admin-color-secondary: #4d6248;
+  --admin-color-text-muted: #6e7c6a;
+  --admin-color-border: rgba(100, 121, 91, 0.16);
+}
+
 .admin-login-page {
+  /* Re-map missing variables safely for the login page */
+  --color-primary: var(--admin-color-primary);
+  --color-primary-dark: var(--admin-color-primary-dark);
+  --color-secondary: var(--admin-color-secondary);
+  --color-text-muted: var(--admin-color-text-muted);
+  --color-border: var(--admin-color-border);
+  color: var(--color-secondary);
+
   padding-top: 120px;
   padding-bottom: 80px;
   min-height: 100vh;
@@ -128,6 +145,33 @@
   width: 100%;
   min-height: 3.5rem;
   font-size: 1rem;
+}
+
+/* Base Utility Classes Originally Provided globally by index.css */
+.admin-login-page .card {
+  background: white;
+}
+.admin-login-page .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+  padding: 0.6rem 1.2rem;
+}
+.admin-login-page .btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+.admin-login-page .btn-primary:active {
+  background: var(--color-primary-dark);
+}
+.admin-login-page .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 @media (max-width: 860px) {

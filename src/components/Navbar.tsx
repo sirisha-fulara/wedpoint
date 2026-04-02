@@ -1,66 +1,54 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useUI } from '../context/UIContext';
 import './Navbar.css';
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { cartCount, toggleCart } = useUI();
+  const location = useLocation();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const handleLinkClick = () => setIsMobileMenuOpen(false);
 
   return (
-    <header className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-      <div className="container nav-container">
-        <Link to="/" className="logo">
-          <span className="logo-copy logo-wordmark">
-            <strong>
-              <span className="logo-wordmark-dark">Wed</span>
-              <span className="logo-wordmark-accent">Meet</span>
-              <span className="logo-wordmark-mark">TM</span>
-            </strong>
-            <small>Wedding Invitations</small>
-          </span>
-        </Link>
+    <nav>
+      <Link to="/" className="nav-logo" onClick={handleLinkClick}>
+        <span className="w">Wed</span><span className="m">Meet</span><span className="tm">™</span>
+      </Link>
+      
+      <ul className="nav-links">
+        <li><Link to="/templates" className={location.pathname === '/templates' ? 'active' : ''}>Cards</Link></li>
+        <li><Link to="/templates?filter=video">Videos</Link></li>
+        <li><Link to="/about" className={location.pathname === '/about' ? 'active' : ''}>About</Link></li>
+        <li><a href="https://instagram.com/wedmeet.in" target="_blank" rel="noreferrer">Instagram</a></li>
+      </ul>
 
-        <nav className="desktop-nav">
-          <Link to="/" className="nav-link">Home</Link>
-          <Link to="/templates" className="nav-link">Explore Designs</Link>
-        </nav>
-
-
+      <div className="nav-right">
+        <a href="https://wa.me/918830659769?text=Hi! I want to order a wedding invitation from WedMeet™ 💍" target="_blank" rel="noreferrer" className="wa-nav">
+          💬 WhatsApp
+        </a>
+        <button className="cart-btn" onClick={toggleCart}>
+          🛒 Cart <span className="cart-count">{cartCount}</span>
+        </button>
         <button
           className="mobile-menu-btn"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
         >
-          {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.nav
-            className="mobile-nav"
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.22 }}
-          >
-            <Link to="/" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
-            <Link to="/templates" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>Explore Designs</Link>
-          </motion.nav>
-        )}
-      </AnimatePresence>
-    </header>
+      {isMobileMenuOpen && (
+        <div className="mobile-nav">
+          <Link to="/templates" onClick={handleLinkClick}>Cards</Link>
+          <Link to="/templates?filter=video" onClick={handleLinkClick}>Videos</Link>
+          <Link to="/about" onClick={handleLinkClick}>About</Link>
+          <a href="https://instagram.com/wedmeet.in" target="_blank" rel="noreferrer" onClick={handleLinkClick}>Instagram</a>
+          <a href="https://wa.me/918830659769?text=Hi! I want to order a wedding invitation from WedMeet™ 💍" target="_blank" rel="noreferrer" onClick={handleLinkClick}>💬 WhatsApp</a>
+        </div>
+      )}
+    </nav>
   );
 };
 

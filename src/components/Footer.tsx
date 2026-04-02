@@ -1,73 +1,40 @@
-import { Instagram, MessageCircle, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = () => {
   return (
-    <footer id="contact" className="footer">
-      <div className="container footer-shell">
-        <div className="footer-grid">
-          <div className="footer-brand">
-            <Link to="/" className="logo footer-logo">
-              <span className="logo-copy logo-wordmark">
-                <strong>
-                  <span className="logo-wordmark-dark">Wed</span>
-                  <span className="logo-wordmark-accent">Meet</span>
-                  <span className="logo-wordmark-mark">TM</span>
-                </strong>
-                <small>Wedding Studio</small>
-              </span>
-            </Link>
-            <p className="footer-desc">
-              A pastel invitation studio for couples who want refined design, smooth customization, and WhatsApp-ready delivery.
-            </p>
-            <div className="social-links">
-              <a href="https://instagram.com/wedmeet.in" className="social-link" aria-label="Instagram">
-                <Instagram size={18} />
-              </a>
-              <a href="https://wa.me/918830659769" className="social-link" aria-label="Whatsapp">
-                <MessageCircle size={18} />
-              </a>
-            </div>
+    <footer>
+      <div className="footer-grid">
+        <div>
+          <div className="footer-logo">
+            <span className="w">Wed</span><span className="m">Meet</span><span className="tm">™</span>
           </div>
-
-          <div className="footer-links-group">
-            <h4 className="footer-heading">Explore</h4>
-            <ul className="footer-links">
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/templates">Templates</Link></li>
-              <li><Link to="/about">About</Link></li>
-              <li><Link to="/admin/login">Admin Login</Link></li>
-            </ul>
-          </div>
-
-          <div className="footer-links-group">
-            <h4 className="footer-heading">Policies</h4>
-            <ul className="footer-links">
-              <li><Link to="/privacy-policy">Privacy Policy</Link></li>
-              <li><Link to="/terms-and-conditions">Terms & Conditions</Link></li>
-            </ul>
-          </div>
-
-          <div className="footer-contact">
-            <h4 className="footer-heading">Talk To Us</h4>
-            <ul className="contact-info">
-              <li>
-                <Phone size={18} className="contact-icon" />
-                <a href="tel:+919876543210">+91 8830659769</a>
-              </li>
-              <li>
-                <Instagram size={18} className="contact-icon" />
-                <a href="https://instagram.com/wedmeet.in" target="_blank" rel="noreferrer">@wedmeet.in</a>
-              </li>
-            </ul>
-            <p className="footer-contact-note">Mon to Sat, 10 AM to 8 PM</p>
-          </div>
+          <p className="footer-desc">Crafting beautiful wedding invitations from Nagpur. Every card, a lasting keepsake.</p>
         </div>
-
-        <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} WedMeet. All rights reserved.</p>
-          <p>Designed for graceful, shareable celebrations.</p>
+        <div className="footer-col">
+          <h4>Collections</h4>
+          <ul>
+            <li><Link to="/templates">Traditional Cards</Link></li>
+            <li><Link to="/templates">Modern Cards</Link></li>
+            <li><Link to="/templates?filter=video">Digital Videos</Link></li>
+            <li><a href="https://wa.me/918830659769" target="_blank" rel="noreferrer">Custom Orders</a></li>
+            <li style={{ marginTop: '14px' }}><Link to="/admin/login" style={{ color: 'var(--green-pale)' }}>Admin Login →</Link></li>
+          </ul>
+        </div>
+        <div className="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="https://wa.me/918830659769" target="_blank" rel="noreferrer">+91 88306 59769</a></li>
+            <li><a href="https://instagram.com/wedmeet.in" target="_blank" rel="noreferrer">@wedmeet.in</a></li>
+            <li><a href="#">Nagpur, Maharashtra</a></li>
+          </ul>
+        </div>
+      </div>
+      <div className="footer-bottom">
+        <p>© 2026 WedMeet™. All rights reserved.</p>
+        <div className="footer-social">
+          <a href="https://wa.me/918830659769" target="_blank" rel="noreferrer" className="social-btn social-wa">💬 WhatsApp</a>
+          <a href="https://instagram.com/wedmeet.in" target="_blank" rel="noreferrer" className="social-btn social-ig">📸 Instagram</a>
         </div>
       </div>
     </footer>

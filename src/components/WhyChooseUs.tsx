@@ -1,40 +1,51 @@
-import { motion } from 'framer-motion';
-import { Sliders, Share2, Clock, Brush, Diamond, Smile } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 import './WhyChooseUs.css';
 
-const reasons = [
-  { icon: <Diamond size={32} />, title: 'Premium Designs', desc: 'Carefully crafted wedding invitations with a modern and elegant touch.' },
-  { icon: <Sliders size={32} />, title: 'Professional Quality', desc: 'Designed by experienced creatives with attention to every detail.' },
-  { icon: <Clock size={32} />, title: 'Fast Delivery', desc: 'Get your customized invitation delivered within 3-4 days.' },
-  { icon: <Brush size={32} />, title: 'Fully Personalized', desc: 'Your names, dates, photos, and style - everything tailored to you.' },
-  { icon: <Share2 size={32}/> , title: 'Ready to Share', desc: 'Optimized for WhatsApp, Instagram, and all social platforms.' },
-  { icon: <Smile size={32} />, title: 'Hassle-Free Process', desc: 'Just share your details, and we handle the rest.' },
-];
-
 const WhyChooseUs = () => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    if (ref.current) {
+      const reveals = ref.current.querySelectorAll('.reveal');
+      reveals.forEach(r => obs.observe(r));
+    }
+    return () => obs.disconnect();
+  }, []);
+
   return (
-    <section className="why-choose-us py-20">
-      <div className="container">
-        <div className="text-center mb-8">
-          <h2 className="section-title">Why Choose Us</h2>
-          <p className="section-subtitle">We make creating your dream wedding invitation effortless and affordable.</p>
+    <section className="section" id="about" ref={ref}>
+      <div className="reveal">
+        <div className="sec-eye">Why WedMeet™</div>
+        <h2 className="sec-title">Every Card is a <em>Masterpiece</em></h2>
+      </div>
+      <div className="why-grid reveal">
+        <div className="why-card">
+          <div className="why-icon">🎨</div>
+          <h4>Custom Design</h4>
+          <p>Every element personalized to match your unique wedding theme</p>
         </div>
-        
-        <div className="reasons-grid">
-          {reasons.map((reason, index) => (
-            <motion.div 
-              key={index}
-              className="reason-card"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              viewport={{ once: true, margin: "-50px" }}
-            >
-              <div className="reason-icon">{reason.icon}</div>
-              <h3>{reason.title}</h3>
-              <p>{reason.desc}</p>
-            </motion.div>
-          ))}
+        <div className="why-card">
+          <div className="why-icon">🖨️</div>
+          <h4>Premium Print</h4>
+          <p>300gsm paper with gold foil & embossing options available</p>
+        </div>
+        <div className="why-card">
+          <div className="why-icon">✉️</div>
+          <h4>Pan-India Delivery</h4>
+          <p>Fast delivery across India in just 3–5 business days</p>
+        </div>
+        <div className="why-card">
+          <div className="why-icon">🎬</div>
+          <h4>Video Invitations</h4>
+          <p>Digital video cards delivered instantly on WhatsApp</p>
         </div>
       </div>
     </section>

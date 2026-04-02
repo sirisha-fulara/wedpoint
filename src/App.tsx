@@ -13,6 +13,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import { TemplateProvider } from './context/TemplateContext';
 import { AuthProvider } from './context/AuthContext';
+import { UIProvider } from './context/UIContext';
+import GlobalUI from './components/GlobalUI';
 import './App.css';
 
 const ScrollToTop = () => {
@@ -45,6 +47,7 @@ const AppShell = () => {
         </Routes>
       </div>
       <Footer />
+      <GlobalUI />
     </div>
   );
 };
@@ -53,9 +56,11 @@ function App() {
   return (
     <AuthProvider>
       <TemplateProvider>
-        <Router>
-          <AppShell />
-        </Router>
+        <UIProvider>
+          <Router>
+            <AppShell />
+          </Router>
+        </UIProvider>
       </TemplateProvider>
     </AuthProvider>
   );
