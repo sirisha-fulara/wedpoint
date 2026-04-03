@@ -14,8 +14,8 @@ const Footer = () => {
         <div className="footer-col">
           <h4>Collections</h4>
           <ul>
-            <li><Link to="/templates">Traditional Cards</Link></li>
-            <li><Link to="/templates">Modern Cards</Link></li>
+            <li><Link to="/templates">Hindu Cards</Link></li>
+            <li><Link to="/templates">Muslim Cards</Link></li>
             <li><Link to="/templates?filter=video">Digital Videos</Link></li>
             <li><a href="https://wa.me/918830659769" target="_blank" rel="noreferrer">Custom Orders</a></li>
             <li style={{ marginTop: '14px' }}><Link to="/admin/login" style={{ color: 'var(--green-pale)' }}>Admin Login →</Link></li>

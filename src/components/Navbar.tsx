@@ -18,8 +18,8 @@ const Navbar = () => {
       </Link>
       
       <ul className="nav-links">
-        <li><Link to="/templates" className={location.pathname === '/templates' ? 'active' : ''}>Cards</Link></li>
-        <li><Link to="/templates?filter=video">Videos</Link></li>
+        <li><Link to="/templates" className={location.pathname === '/templates' && !location.search.includes('filter=video') ? 'active' : ''}>Cards</Link></li>
+        <li><Link to="/templates?filter=video" className={location.pathname === '/templates' && location.search.includes('filter=video') ? 'active' : ''}>Videos</Link></li>
         <li><Link to="/about" className={location.pathname === '/about' ? 'active' : ''}>About</Link></li>
         <li><a href="https://instagram.com/wedmeet.in" target="_blank" rel="noreferrer">Instagram</a></li>
       </ul>
@@ -41,9 +41,9 @@ const Navbar = () => {
 
       {isMobileMenuOpen && (
         <div className="mobile-nav">
-          <Link to="/templates" onClick={handleLinkClick}>Cards</Link>
-          <Link to="/templates?filter=video" onClick={handleLinkClick}>Videos</Link>
-          <Link to="/about" onClick={handleLinkClick}>About</Link>
+          <Link to="/templates" className={location.pathname === '/templates' && !location.search.includes('filter=video') ? 'active' : ''} onClick={handleLinkClick}>Cards</Link>
+          <Link to="/templates?filter=video" className={location.pathname === '/templates' && location.search.includes('filter=video') ? 'active' : ''} onClick={handleLinkClick}>Videos</Link>
+          <Link to="/about" className={location.pathname === '/about' ? 'active' : ''} onClick={handleLinkClick}>About</Link>
           <a href="https://instagram.com/wedmeet.in" target="_blank" rel="noreferrer" onClick={handleLinkClick}>Instagram</a>
           <a href="https://wa.me/918830659769?text=Hi! I want to order a wedding invitation from WedMeet™ 💍" target="_blank" rel="noreferrer" onClick={handleLinkClick}>💬 WhatsApp</a>
         </div>

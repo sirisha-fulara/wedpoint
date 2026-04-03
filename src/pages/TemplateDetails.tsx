@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -370,21 +370,21 @@ const TemplateDetailsContent = ({ template }: { template: Template }) => {
                 <div className="template-card-section template-secondary-section">
                   <h3 className="section-heading">Your Card Your Way</h3>
                   <ul className="feature-list">
-                    <li><CheckCircle2 size={20} color="var(--color-primary)" style={{ flexShrink: 0 }} /> Personalize names, dates, ceremonies, venue, and instructions</li>
-                    <li><CheckCircle2 size={20} color="var(--color-primary)" style={{ flexShrink: 0 }} /> Add more than one couple or family reference photo in the customise form</li>
-                    <li><CheckCircle2 size={20} color="var(--color-primary)" style={{ flexShrink: 0 }} /> Open video and PDF in the same page with focused popups</li>
-                    <li><CheckCircle2 size={20} color="var(--color-primary)" style={{ flexShrink: 0 }} /> Draft the full order directly into WhatsApp for the admin</li>
+                    <li><CheckCircle2 size={20} color="var(--green-l)" style={{ flexShrink: 0 }} /> Personalize names, dates, ceremonies, venue, and instructions</li>
+                    <li><CheckCircle2 size={20} color="var(--green-l)" style={{ flexShrink: 0 }} /> Add more than one couple or family reference photo in the customise form</li>
+                    <li><CheckCircle2 size={20} color="var(--green-l)" style={{ flexShrink: 0 }} /> Open video and PDF in the same page with focused popups</li>
+                    <li><CheckCircle2 size={20} color="var(--green-l)" style={{ flexShrink: 0 }} /> Draft the full order directly into WhatsApp for the admin</li>
                   </ul>
                 </div>
 
                 <div className="template-card-section template-secondary-section">
                   <h3 className="section-heading">What You Get</h3>
                   <ul className="feature-list">
-                    <li><CheckCircle2 size={20} color="var(--color-primary)" style={{ flexShrink: 0 }} /> Share your invitation instantly on WhatsApp, Email, or SMS</li>
-                    <li><CheckCircle2 size={20} color="var(--color-primary)" style={{ flexShrink: 0 }} /> A beautiful video invitation with music</li>
-                    <li><CheckCircle2 size={20} color="var(--color-primary)" style={{ flexShrink: 0 }} /> A digital PDF invitation ready for review and quick sharing</li>
-                    <li><CheckCircle2 size={20} color="var(--color-primary)" style={{ flexShrink: 0 }} /> Smooth image gallery slider for all uploaded previews</li>
-                    <li><CheckCircle2 size={20} color="var(--color-primary)" style={{ flexShrink: 0 }} /> 3 free revisions to make sure everything feels perfect</li>
+                    <li><CheckCircle2 size={20} color="var(--green-l)" style={{ flexShrink: 0 }} /> Share your invitation instantly on WhatsApp, Email, or SMS</li>
+                    <li><CheckCircle2 size={20} color="var(--green-l)" style={{ flexShrink: 0 }} /> A beautiful video invitation with music</li>
+                    <li><CheckCircle2 size={20} color="var(--green-l)" style={{ flexShrink: 0 }} /> A digital PDF invitation ready for review and quick sharing</li>
+                    <li><CheckCircle2 size={20} color="var(--green-l)" style={{ flexShrink: 0 }} /> Smooth image gallery slider for all uploaded previews</li>
+                    <li><CheckCircle2 size={20} color="var(--green-l)" style={{ flexShrink: 0 }} /> 3 free revisions to make sure everything feels perfect</li>
                   </ul>
                 </div>
               </div>

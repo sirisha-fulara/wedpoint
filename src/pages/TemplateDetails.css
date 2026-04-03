@@ -241,10 +241,6 @@
 .template-secondary-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
 .template-secondary-section { margin-bottom: 0; height: 100%; }
 
-@media (min-width: 920px) {
-  .template-secondary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
 .template-card-section {
   background: rgba(255,255,255,0.03);
   border-radius: 14px;
@@ -365,11 +361,11 @@
 .feature-list li {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 1rem;
-  color: rgba(255,255,255,0.6);
-  line-height: 1.6;
-  font-size: 0.9rem;
+  gap: 14px;
+  margin-bottom: 1.25rem;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.7;
+  font-size: 0.93rem;
 }
 .feature-list li:last-child { margin-bottom: 0; }
 

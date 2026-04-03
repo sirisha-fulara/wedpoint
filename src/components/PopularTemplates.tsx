@@ -19,6 +19,10 @@ const PopularTemplates = ({ initialFilter = 'all', limit, showViewAll }: Props) 
   const navigate = useNavigate();
 
   useEffect(() => {
+    setFilter(initialFilter);
+  }, [initialFilter]);
+
+  useEffect(() => {
     // Reveal animation
     const obs = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
@@ -35,12 +39,17 @@ const PopularTemplates = ({ initialFilter = 'all', limit, showViewAll }: Props) 
     return () => obs.disconnect();
   }, [filter, templates, isLoading]);
 
-  // Adapt the filter logic. The HTML had categories: traditional, modern, floral, royal, minimal, video.
-  // We'll map template 'religion', 'badge', 'type' loosely since we may not have exact styles.
+  // Map filter directly to the religion attribute in the template schema
   const filteredTemplates = templates.filter(t => {
     if (filter === 'all') return true;
     if (filter === 'video') return t.type === 'video';
-    // Mappings based on keywords
+    
+    // Direct matches for religion
+    if (['hindu', 'muslim', 'sikh', 'christian'].includes(filter)) {
+      return t.religion?.toLowerCase() === filter;
+    }
+
+    // Fallback for keyword mappings
     const desc = (t.name + ' ' + t.description).toLowerCase();
     return desc.includes(filter);
   });
@@ -58,11 +67,10 @@ const PopularTemplates = ({ initialFilter = 'all', limit, showViewAll }: Props) 
         <h2 className="sec-title">Our <em>Collections</em></h2>
         <div className="cat-row">
           <button className={`cat-pill ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>All</button>
-          <button className={`cat-pill ${filter === 'traditional' ? 'active' : ''}`} onClick={() => setFilter('traditional')}>Traditional</button>
-          <button className={`cat-pill ${filter === 'modern' ? 'active' : ''}`} onClick={() => setFilter('modern')}>Modern</button>
-          <button className={`cat-pill ${filter === 'floral' ? 'active' : ''}`} onClick={() => setFilter('floral')}>Floral</button>
-          <button className={`cat-pill ${filter === 'royal' ? 'active' : ''}`} onClick={() => setFilter('royal')}>Royal</button>
-          <button className={`cat-pill ${filter === 'minimal' ? 'active' : ''}`} onClick={() => setFilter('minimal')}>Minimal</button>
+          <button className={`cat-pill ${filter === 'hindu' ? 'active' : ''}`} onClick={() => setFilter('hindu')}>Hindu</button>
+          <button className={`cat-pill ${filter === 'muslim' ? 'active' : ''}`} onClick={() => setFilter('muslim')}>Muslim</button>
+          <button className={`cat-pill ${filter === 'sikh' ? 'active' : ''}`} onClick={() => setFilter('sikh')}>Sikh</button>
+          <button className={`cat-pill ${filter === 'christian' ? 'active' : ''}`} onClick={() => setFilter('christian')}>Christian</button>
           <button 
             className={`cat-pill ${filter === 'video' ? 'active' : ''}`} 
             style={filter !== 'video' ? { color: 'var(--green-l)', borderColor: 'rgba(106,171,112,0.3)' } : {}}
