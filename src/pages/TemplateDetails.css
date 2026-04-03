@@ -525,5 +525,5 @@
   .compact-gallery-shell { min-height: auto; padding: 1rem; }
   .template-card-section { padding: 1.5rem; }
   .customise-grid, .customise-summary, .package-selector, .pricing-row { grid-template-columns: 1fr; }
-  .pricing-row { grid-template-columns: 1fr auto; }
+  .pricing-row { grid-template-columns: minmax(80px, 1fr) auto minmax(80px, 1fr); }
 }

@@ -2,6 +2,8 @@
 footer {
   background: #0f1410;
   padding: 80px 48px 40px;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .footer-grid {

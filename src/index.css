@@ -20,6 +20,8 @@
 
 html {
   scroll-behavior: smooth;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
@@ -27,6 +29,7 @@ body {
   background: var(--charcoal);
   color: var(--white);
   overflow-x: hidden;
+  max-width: 100vw;
 }
 
 .section {
